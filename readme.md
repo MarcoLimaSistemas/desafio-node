@@ -45,7 +45,15 @@ Fazemos parte do universo digital, focada em criar e desenvolver experiências i
 - Criar usuarios de dois tipos, Administradores e Clientes.
 - Os usuarios Administradores tem acesso a todos os endpoints
 - Os usuarios Clientes tem acesso a listagem de produtos e categorias
-- Os usuarios Clientes fazer e cancelar vendas e listar as vendas que foram feitas por ele.
+- Os usuarios Clientes não podem cadastrar, alterar ou excluir categorias e produtos
+- Os usuarios Clientes podem fazer e cancelar vendas
+- Ao listar as vendas logado como usuario exibir apenas as que foram feitas por ele
+
+### Etapa 5 - Cliente para integração.
+
+- Criar uma aplicação vue para integração dos dados
+- Criar uma tela para cadastro, login, cadastro de categoria, de produtos e de venda
+- Não é necessário criar um layout especifico pode usar um framework para agilizar (ex: bootstrap)
 
 ## Diferencial
 
