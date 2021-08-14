@@ -42,11 +42,23 @@ class UserController {
         return user
     }
 
-    async index({ pagination }) {
-        const users = await User.query().paginate(
-            pagination.page,
-            pagination.perpage,
-        );
+    async index({ pagination, request }) {
+        const { query } = request.get()
+
+        const users = await User.query()
+            .where(function () {
+                // RF: Implementar endpoint que liste todos os usuarios
+                // com possibilidade de busca por palavra chave (buscar no nome ou email)
+                if (query) {
+                    this.whereRaw('UPPER(name) like ?', [`%${query.toUpperCase()}%`])
+                    this.orWhereRaw('UPPER(email) like ?', [`%${query.toUpperCase()}%`])
+                }
+                    
+            })
+            .paginate(
+                pagination.page,
+                pagination.perpage,
+            );
 
         return users
     }
