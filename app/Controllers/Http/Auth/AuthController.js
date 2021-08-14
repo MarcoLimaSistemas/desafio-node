@@ -14,7 +14,7 @@ class AuthController {
 
       const data = await auth.withRefreshToken().attempt(email, password);
 
-      return response.ok({ data, user });
+      return response.ok({ data });
     } catch (error) {
       Logger.error(error.message);
       return response.unauthorized({ message: error.message });
@@ -23,37 +23,35 @@ class AuthController {
 
 
   async forgotPassword({ request, response }) {
-    try {
-      const { email } = request.post();
-      const user = await User.findBy("email", email);
 
-      const resetedInfo = await resetedPassword.create({
-        email,
-        status: false,
-      });
+    const { email } = request.post();
+    const user = await User.findByOrFail("email", email);
 
-      const id = resetedInfo.id;
-      const max = 6 - id.toString().length;
-      let code = Math.random() * 1000000;
-      code = code.toString();
-      code = code.substr(0, max);
-      code = `${id}${code}`;
+    const resetedInfo = await resetedPassword.create({
+      email,
+      status: false,
+    });
 
-      resetedInfo.code = code;
+    const id = resetedInfo.id;
+    const max = 6 - id.toString().length;
+    let code = Math.random() * 1000000;
+    code = code.toString();
+    code = code.substr(0, max);
+    code = `${id}${code}`;
 
-      await resetedInfo.save();
+    resetedInfo.code = code;
 
-      await Mail.send("forgotpassword", { code }, message => {
-        message
-          .to(user.email)
-          .from(Env.get("MAIL_USERNAME"))
-          .subject("Código para redefinir sua senha");
-      });
+    await resetedInfo.save();
 
-      return response.ok({ message: "Email enviado com sucesso." });
-    } catch (error) {
-      return error.message;
-    }
+    await Mail.send("forgotpassword", { code }, message => {
+      message
+        .to(user.email)
+        .from(Env.get("MAIL_USERNAME"))
+        .subject("Código para redefinir sua senha");
+    });
+
+    return response.ok({ message: "Email enviado com sucesso. Valide seu código" });
+
   }
 
   async changePassword({ request, auth, response }) {
