@@ -53,7 +53,7 @@ class UserController {
                     this.whereRaw('UPPER(name) like ?', [`%${query.toUpperCase()}%`])
                     this.orWhereRaw('UPPER(email) like ?', [`%${query.toUpperCase()}%`])
                 }
-                    
+
             })
             .paginate(
                 pagination.page,
@@ -61,6 +61,12 @@ class UserController {
             );
 
         return users
+    }
+
+    async destroy({ params }) {
+        const user = await User.findOrFail(params.id)
+        await user.tokens().delete()
+        await user.delete()
     }
 
 }

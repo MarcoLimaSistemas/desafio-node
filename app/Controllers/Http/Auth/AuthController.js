@@ -55,6 +55,7 @@ class AuthController {
   
   }
 
+  // Implementar recuperação de senha por e-mail.
 
   async forgotPassword({ request, response }) {
 
