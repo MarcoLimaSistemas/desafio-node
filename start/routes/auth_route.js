@@ -19,6 +19,7 @@ const Route = use('Route')
 
 Route.group(() => {
     Route.post('authenticate', 'AuthController.login')     
+    Route.post('logout', 'AuthController.logout')     
 })
     .prefix('v1')
     .namespace('Auth')

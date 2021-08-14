@@ -6,8 +6,11 @@ const Mail = use("Mail");
 const moment = use("moment");
 const Env = use("Env");
 const Logger = use("Logger");
+const Encryption = use("Encryption");
+const Token = use("App/Models/Token");
+const { validate } = use('Validator')
 class AuthController {
-
+  // Implementar endpoints de login e logout.
   async login({ request, response, auth }) {
     try {
       const { email, password } = request.only(["email", "password"]);
@@ -19,6 +22,37 @@ class AuthController {
       Logger.error(error.message);
       return response.unauthorized({ message: error.message });
     }
+  }
+
+
+  async logout({ request, response }) {
+    const rules = {
+      refresh_token: 'required'
+    };
+
+    const { refresh_token } = request.headers()
+
+    const validation = await validate({ refresh_token }, rules);
+
+    const decrypted = Encryption.decrypt(refresh_token);
+
+    if (!validation.fails()) {
+      try {
+        const refreshToken = await Token.findBy('token', decrypted);
+        if (refreshToken) {
+          refreshToken.delete();
+          response.status(200).send({ status: 'ok' });
+        } else {
+          response.status(401).send({ error: 'Invalid refresh token' });
+        }
+      } catch (err) {
+        response.status(401).send({ error: err.toString()});
+      }
+    } else {
+      response.status(401).send(validation.messages());
+    }
+
+  
   }
 
 
