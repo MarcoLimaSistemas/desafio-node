@@ -1,5 +1,7 @@
 'use strict'
 
+const { existAssociatedWithSale } = require("../../../Validators/Products/DestroyProduct")
+
 const Product = use('App/Models/Product')
 
 //Implementar endpoints para cadastro, edição e exclusão de produtos.
@@ -34,6 +36,10 @@ class ProductController {
     }
 
     async destroy({ params }) {
+        const invalidFields = await existAssociatedWithSale(params.id)
+        if (invalidFields.length > 0) {
+            return { status: 400, error: invalidFields };
+        }
 
         const product = await Product.findOrFail(params.id)
 
