@@ -14,6 +14,9 @@ class Sale extends Model {
         return this.hasMany('App/Models/SalesProduct', 'id', 'sales_id')
     }
 
+    
+   
+
 
 }
 

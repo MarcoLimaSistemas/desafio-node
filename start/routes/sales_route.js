@@ -21,7 +21,9 @@ Route.group(() => {
     Route.post('sales/orders', 'SaleController.order')   
     .validator('Sales/StoreOrder')    
 
-    Route.delete('sales/orders/:id/cancelations', 'SaleController.cancelation')  
+    Route.delete('sales/orders/:id/cancelations', 'SaleController.cancelation') 
+    
+    Route.get('sales/orders', 'SaleController.index')
 })
     .middleware('auth')
     .prefix('v1')
