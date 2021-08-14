@@ -21,7 +21,7 @@ Route.group(() => {
     Route.resource('categories', 'CategorieController')
         .validator(new Map([
             [['categories.store'], ['Categories/StoreCategorie']],
-           // [['users.update'], ['Users/UpdateUser']],
+           
         ]))
 })
     .prefix('v1')

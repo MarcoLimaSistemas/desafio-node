@@ -18,7 +18,7 @@ const existsFn = async (data, field, message, args, get) => {
   }
 };
 
-const notExistsFn = async (data, field, message, args, get) => {
+const associated = async (data, field, message, args, get) => {
   const Database = ioc.use("Database");
 
   const value = get(data, field);
@@ -56,7 +56,7 @@ class CustomValidatorProvider extends ServiceProvider {
   boot() {
     const Validator = ioc.use("Validator");
     Validator.extend("exists", existsFn);
-    Validator.extend("not-exists", notExistsFn);
+    Validator.extend("associated", associated);
   }
 }
 

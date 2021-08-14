@@ -1,5 +1,7 @@
 'use strict'
 
+const { existAssociatedProduct } = require("../../../Validators/Categories/DestroyCategorie")
+
 const Category = use('App/Models/Category')
 //Implementar endpoints para cadastro, edição e exclusão de categorias.
 class CategorieController {
@@ -56,6 +58,10 @@ class CategorieController {
     }
 
     async destroy({ params }) {
+        const invalidFields = await existAssociatedProduct(params.id)
+        if (invalidFields.length > 0) {
+            return { status: 400, error: invalidFields };
+        }
         const categorie = await Category.findOrFail(params.id)
 
         await categorie.delete()
