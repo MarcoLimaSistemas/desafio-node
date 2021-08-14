@@ -4,13 +4,30 @@ const Category = use('App/Models/Category')
 //Implementar endpoints para cadastro, edição e exclusão de categorias.
 class CategorieController {
 
-    async index({ pagination }) {
-        const categories = await Category.query()
-            .paginate(
-                pagination.page,
-                pagination.perpage,
-            );
+    async index({ pagination, request }) {
+        // Implementar endpoint para listagem de categorias e os produtos dessas categorias 
+        // com possibilidade de busca pelo nome da categoria ou de um produto que pertença a ela.
 
+        const { query } = request.get()
+
+        const preQuery = Category.query()
+            .whereHas('products', builder => {
+                if (query)
+                    builder.whereRaw('UPPER(name) like ?', [`%${query.toUpperCase()}%`])
+            })
+
+            .with('products', (builder) => {
+                if (query)
+                    builder.whereRaw('UPPER(name) like ?', [`%${query.toUpperCase()}%`])
+            })
+
+        if (!query) {
+            preQuery.orDoesntHave('products')
+        }
+        const categories = await preQuery.paginate(
+            pagination.page,
+            pagination.perpage,
+        )
         return categories
     }
 
