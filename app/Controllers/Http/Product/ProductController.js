@@ -35,10 +35,12 @@ class ProductController {
         return product
     }
 
-    async destroy({ params }) {
+    async destroy({ params, response }) {
         const invalidFields = await existAssociatedWithSale(params.id)
         if (invalidFields.length > 0) {
-            return { status: 400, error: invalidFields };
+            return response.status(400).send({
+                error: invalidFields
+            })
         }
 
         const product = await Product.findOrFail(params.id)

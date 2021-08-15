@@ -19,10 +19,13 @@ const Route = use('Route')
 
 Route.group(() => {
     Route.resource('categories', 'CategorieController')
-        .validator(new Map([
-            [['categories.store'], ['Categories/StoreCategorie']],
-           
+        .middleware(new Map([
+            [['categories.store', 'categories.update', 'categories.destroy'], 'admin']
         ]))
+        .validator(new Map([
+            [['categories.store'], ['Categories/StoreCategorie']],           
+        ]))
+        
 })
     .prefix('v1')
     .namespace('Categorie')

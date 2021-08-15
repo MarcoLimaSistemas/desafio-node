@@ -1,6 +1,7 @@
 'use strict'
 
 const moment = require('moment')
+const { USER_ROLE } = require('../../../Settings/user_const')
 
 const Sale = use('App/Models/Sale')
 
@@ -11,9 +12,11 @@ const SalesProduct = use('App/Models/SalesProduct')
 const Database = use('Database')
 class SaleController {
 
-    async index({ pagination, request }) {
+    async index({ pagination, request, auth }) {
         //Listar todos os pedidos de venda trazendo todos os produtos e o total da venda com filtro por data de inicio e fim
         const { initial_date, final_date } = request.get()
+
+        const user = await auth.getUser()
 
         const orders = await Sale.query()
             .with('salesProducts', (builder) => {
@@ -22,6 +25,10 @@ class SaleController {
                     .groupBy("sales_id");
             })
             .where(function () {
+                //Ao listar as vendas logado como usuario exibir apenas as que foram feitas por ele
+                if (user.role ==  USER_ROLE.CLIENT) {
+                    this.where('user_id', user.id)
+                }
                 if (initial_date && final_date)
                     this.whereBetween('date', [moment(initial_date).format('YYYY-MM-DD H:mm:ss'), moment(final_date).format('YYYY-MM-DD H:mm:ss')])
             })

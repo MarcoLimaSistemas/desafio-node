@@ -19,13 +19,16 @@ const Route = use('Route')
 
 Route.group(() => {
     Route.resource('products', 'ProductController')
+        .middleware(new Map([
+            [['products.store', 'products.update', 'products.destroy'], 'admin']
+        ]))
         .validator(new Map([
             [['products.store'], ['Products/StoreProduct']],
             [['products.update'], ['Products/UpdateProduct']],
         ]))
 
     Route.post('products/:id/update-stoke-balance', 'ProductController.updateStokeBalance')
-    .validator('Products/UpdateStokeBalance')
+        .validator('Products/UpdateStokeBalance')
 })
     .prefix('v1')
     .namespace('Product')
