@@ -37,8 +37,21 @@ Import insomnia from file:
 
 ![Alt Text](./documents/import_from_file.gif)
 
+
 Change enviroment insomnia and go to request:
 
+
 ![Alt Text](./documents/change_enviroment.gif)
+
+
+Access_docs:
+
+
+![Alt Text](./documents/access_docs.gif)
+
+Change bearer token:
+
+
+![Alt Text](./documents/change_bearer_token.gif)
 
 
