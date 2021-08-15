@@ -4,13 +4,15 @@ class StoreUser {
   
   async fails (errorMessages) {
     return this.ctx.response.status(400).send(errorMessages)
+    
   }
 
   get rules () {
     return {
       name: 'required|min:3|max:45',
       email: 'required|email|unique:users',
-      password: 'required|confirmed'
+      role: 'required|in:admin,client',
+      password: 'required|confirmed',
     }
   }
 
@@ -24,7 +26,9 @@ class StoreUser {
       'email.email': 'Email inválido.',
       'email.unique': 'Email já cadastrado',
       'password.required': 'Forneça uma senha',
-      'password.confirmed': 'Senhas não conferem'
+      'password.confirmed': 'Senhas não conferem',
+      'role.required': 'Função do usuário não especificada',
+      'role.in': 'Informe o valor válido (admin,client)'
     }
   }
 }
