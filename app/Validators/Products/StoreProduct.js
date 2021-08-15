@@ -12,6 +12,7 @@ class StoreProduct {
       stoke_balance: 'required|integer',
       //Todo produto cadastrado precisa obrigatoriamente pertencer a uma categoria.
       categorie_id: 'required|exists:categories,id',
+      image_id: 'required|exists:images,id',
       price: 'required|integer',
     }
   }
@@ -25,8 +26,10 @@ class StoreProduct {
       'name.unique': 'Produto já cadastrado',
       'stoke_balance.required': 'Balanço é obrigatório',
       'categorie_id.required': 'Todo produto cadastrado precisa obrigatoriamente pertencer a uma categoria.',
+      'image_id.required': 'Todo produto cadastrado precisa obrigatoriamente ter uma imagem',
       'stoke_balance.integer': 'Balanço deve ser inteiro',
       'categorie_id.exists': 'Categoria inexistente',
+      'image_id.exists': 'Imagem inexistente',
       'price.required': 'O preço é obrigatório',
       'price.integer': 'O preço deve ser em centavos',
     }
