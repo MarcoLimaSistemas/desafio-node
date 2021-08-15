@@ -26,3 +26,11 @@ Run the following command to run startup migrations.
 ```js
 adonis migration:run
 ```
+
+```bash
+adonis seed
+```
+
+### Documentations API
+
+![Alt Text](./documents/change_enviroment.gif)
